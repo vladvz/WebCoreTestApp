@@ -2,3 +2,19 @@
     font: 12px verdana;
     color: #000000;
 }
+
+menu li {
+    display: inline;
+}
+
+menu li::after {
+    content: ' |';
+}
+
+menu li:last-of-type::after {
+    content: '';
+}
+
+menu, menu ul {
+    padding-left: 0;
+}

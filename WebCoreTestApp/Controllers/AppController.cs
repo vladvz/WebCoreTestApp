@@ -13,5 +13,21 @@ namespace WebCoreTestApp.Controllers
         {
             return View();
         }
+
+        [HttpGet("contact")]
+        public IActionResult Contact()
+        {
+            ViewBag.Title = "Contact";
+
+            return View();
+        }
+
+        [HttpGet("about")]
+        public IActionResult About()
+        {
+            ViewBag.Title = "About";
+
+            return View();
+        }
     }
 }
