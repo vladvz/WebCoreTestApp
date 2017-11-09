@@ -1,10 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebCoreTestApp.Services;
 using WebCoreTestApp.ViewModels;
 
 namespace WebCoreTestApp.Controllers
 {
     public class AppController : Controller
     {
+        private readonly IMailService _mailService;
+
+        public AppController(IMailService mailService)
+        {
+            _mailService = mailService;
+        }
+
         public IActionResult Index()
         {
             return View();
@@ -21,11 +29,9 @@ namespace WebCoreTestApp.Controllers
         {
             if (ModelState.IsValid)
             {
-
-            }
-            else
-            {
-
+                _mailService.SendMessage(model.Subject, model.Name, model.Message);
+                ModelState.Clear();
+                ViewBag.MessageStatus = $"Message to {model.Name} has been sent";
             }
 
             return View();
