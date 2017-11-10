@@ -31,7 +31,7 @@ namespace WebCoreTestApp.Controllers
             {
                 _mailService.SendMessage(model.Subject, model.Name, model.Message);
                 ModelState.Clear();
-                ViewBag.MessageStatus = $"Message to {model.Name} has been sent";
+                ViewBag.UserMessage = $"Message to {model.Name} has been sent";
             }
 
             return View();
