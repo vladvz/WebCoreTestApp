@@ -1,0 +1,11 @@
+{
+  "ConnectionStrings": {
+    "WebCoreConnectionString": "server=(localdb)\\MSSQLLocalDB;Database=WebCore;Integrated Security=true;MultipleActiveResultSets=true;"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft":  "Warning"
+    }
+  }
+}

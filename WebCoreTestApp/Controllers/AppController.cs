@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebCoreTestApp.Data;
 using WebCoreTestApp.Services;
 using WebCoreTestApp.ViewModels;
 
@@ -6,10 +7,12 @@ namespace WebCoreTestApp.Controllers
 {
     public class AppController : Controller
     {
+        private readonly IWebCoreRepository _repository;
         private readonly IMailService _mailService;
 
-        public AppController(IMailService mailService)
+        public AppController(IWebCoreRepository repository, IMailService mailService)
         {
+            _repository = repository;
             _mailService = mailService;
         }
 
@@ -41,6 +44,13 @@ namespace WebCoreTestApp.Controllers
         public IActionResult About()
         {
             return View();
+        }
+
+        public IActionResult Shop()
+        {
+            var results = _repository.GetAllProducts();
+
+            return View(results);
         }
     }
 }
