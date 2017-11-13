@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebCoreTestApp.Data;
+using WebCoreTestApp.Data.Entities;
 
 namespace WebCoreTestApp.Controllers
 {
@@ -54,6 +55,23 @@ namespace WebCoreTestApp.Controllers
 
                 return BadRequest("Failed to get order");
             }
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody]Order model)
+        {
+            try
+            {
+                _repository.AddEntity(model);
+
+                return Created($"/api/orders/{model.Id}", model);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError($"Failed to add order: {ex.Message}");
+            }
+
+            return BadRequest();
         }
     }
 }
