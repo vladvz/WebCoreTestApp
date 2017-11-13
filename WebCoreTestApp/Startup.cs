@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 using WebCoreTestApp.Data;
 using WebCoreTestApp.Data.Entities;
 using WebCoreTestApp.Services;
@@ -29,7 +30,8 @@ namespace WebCoreTestApp
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<WebCoreSeeder>();
             services.AddScoped<IWebCoreRepository, WebCoreRepository>();
-            services.AddMvc();
+            services.AddMvc()
+                    .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
