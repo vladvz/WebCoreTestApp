@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ namespace WebCoreTestApp
             {
                 cfg.UseSqlServer(_config.GetConnectionString("WebCoreConnectionString"));
             });
+            services.AddAutoMapper();
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<WebCoreSeeder>();
             services.AddScoped<IWebCoreRepository, WebCoreRepository>();

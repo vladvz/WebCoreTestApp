@@ -51,7 +51,9 @@ namespace WebCoreTestApp.Data
 
         public bool SaveAll()
         {
-            return _context.SaveChanges() > 0;
+            var result = _context.SaveChanges();
+
+            return true;
         }
 
         public void AddEntity(object model)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebCoreTestApp.Data;
 using WebCoreTestApp.Data.Entities;
+using WebCoreTestApp.ViewModels;
 
 namespace WebCoreTestApp.Controllers
 {
@@ -15,11 +17,13 @@ namespace WebCoreTestApp.Controllers
     {
         private readonly IWebCoreRepository _repository;
         private readonly ILogger<OrdersController> _logger;
+        private readonly IMapper _mapper;
 
-        public OrdersController(IWebCoreRepository repository, ILogger<OrdersController> logger)
+        public OrdersController(IWebCoreRepository repository, ILogger<OrdersController> logger, IMapper mapper)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,7 +31,7 @@ namespace WebCoreTestApp.Controllers
         {
             try
             {
-                return Ok(_repository.GetAllOrders());
+                return Ok(_mapper.Map<IEnumerable<Order>,IEnumerable<OrderViewModel>>(_repository.GetAllOrders()));
             }
             catch(Exception ex)
             {
@@ -45,7 +49,7 @@ namespace WebCoreTestApp.Controllers
                 var order = _repository.GetOrderById(id);
 
                 if (order != null)
-                    return Ok(_repository.GetOrderById(id));
+                    return Ok(_mapper.Map<Order,OrderViewModel>(order));
                 else
                     return NotFound();
             }
@@ -58,13 +62,30 @@ namespace WebCoreTestApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody]Order model)
+        public IActionResult Post([FromBody]OrderViewModel model)
         {
             try
             {
-                _repository.AddEntity(model);
+                if (ModelState.IsValid)
+                {
+                    var newOrder = _mapper.Map<OrderViewModel, Order>(model);
 
-                return Created($"/api/orders/{model.Id}", model);
+                    if (newOrder.OrderDate == DateTime.MinValue)
+                    {
+                        newOrder.OrderDate = DateTime.Now;
+                    }
+
+                    _repository.AddEntity(newOrder);
+
+                    if (_repository.SaveAll())
+                    {
+                        return Created($"/api/orders/{newOrder.Id}", _mapper.Map<Order, OrderViewModel>(newOrder));
+                    }
+                }
+                else
+                {
+                    return BadRequest(ModelState);
+                }
             }
             catch(Exception ex)
             {
