@@ -27,11 +27,13 @@ namespace WebCoreTestApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(bool includeItems = true)
         {
             try
             {
-                return Ok(_mapper.Map<IEnumerable<Order>,IEnumerable<OrderViewModel>>(_repository.GetAllOrders()));
+                var result = _repository.GetAllOrders(includeItems);
+
+                return Ok(_mapper.Map<IEnumerable<Order>,IEnumerable<OrderViewModel>>(result));
             }
             catch(Exception ex)
             {
