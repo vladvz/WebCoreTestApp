@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace WebCoreTestApp.Data.Entities
 {
-    public class WebCoreContext : DbContext
+    public class WebCoreContext : IdentityDbContext<StoreUser>
     {
         public WebCoreContext(DbContextOptions<WebCoreContext> options) : base(options)
         {

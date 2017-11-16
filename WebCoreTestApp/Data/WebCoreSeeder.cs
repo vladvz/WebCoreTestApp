@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,16 +15,41 @@ namespace WebCoreTestApp.Data
     {
         private WebCoreContext _context;
         private readonly IHostingEnvironment _env;
+        private readonly UserManager<StoreUser> _userManager;
 
-        public WebCoreSeeder(WebCoreContext context, IHostingEnvironment env)
+        public WebCoreSeeder(
+            WebCoreContext context, 
+            IHostingEnvironment env,
+            UserManager<StoreUser> userManager)
         {
             _context = context;
             _env = env;
+            _userManager = userManager;
         }
 
-        public void Seed()
+        public async Task Seed()
         {
             _context.Database.EnsureCreated();
+
+            var user = await _userManager.FindByEmailAsync("test@mail.com");
+
+            if (user == null)
+            {
+                user = new StoreUser()
+                {
+                    FirstName = "Test",
+                    LastName = "Tester",
+                    UserName = "tester@mail.com",
+                    Email = "tester@mail.com"
+                };
+
+                var result = await _userManager.CreateAsync(user,"P@ssw0rd!");
+
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Failed to create default user");
+                }
+            }
 
             if (!_context.Products.Any())
             {
@@ -37,6 +63,7 @@ namespace WebCoreTestApp.Data
                 {
                     OrderDate = DateTime.Now,
                     OrderNumber = "12345",
+                    User = user,
                     Items = new List<OrderItem>()
                     {
                         new OrderItem()

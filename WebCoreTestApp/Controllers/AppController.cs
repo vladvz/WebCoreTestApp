@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebCoreTestApp.Data;
 using WebCoreTestApp.Services;
 using WebCoreTestApp.ViewModels;
@@ -46,6 +47,8 @@ namespace WebCoreTestApp.Controllers
             return View();
         }
 
+        [Authorize]
+        [HttpGet]
         public IActionResult Shop()
         {
             var results = _repository.GetAllProducts();
