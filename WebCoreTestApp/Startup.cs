@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,10 +17,12 @@ namespace WebCoreTestApp
     public class Startup
     {
         private IConfiguration _config;
+        private readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration config)
+        public Startup(IConfiguration config, IHostingEnvironment env)
         {
             _config = config;
+            _env = env;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -40,8 +43,13 @@ namespace WebCoreTestApp
             services.AddTransient<IMailService, MailService>();
             services.AddTransient<WebCoreSeeder>();
             services.AddScoped<IWebCoreRepository, WebCoreRepository>();
-            services.AddMvc()
-                    .AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
+            services.AddMvc(opt => 
+            {
+                if (_env.IsProduction())
+                {
+                    opt.Filters.Add(new RequireHttpsAttribute());
+                }
+            }).AddJsonOptions(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

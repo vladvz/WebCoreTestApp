@@ -31,7 +31,7 @@ namespace WebCoreTestApp.Data
         {
             _context.Database.EnsureCreated();
 
-            var user = await _userManager.FindByEmailAsync("test@mail.com");
+            var user = await _userManager.FindByEmailAsync("tester@mail.com");
 
             if (user == null)
             {
