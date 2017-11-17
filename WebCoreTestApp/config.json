@@ -5,7 +5,10 @@
   "Logging": {
     "LogLevel": {
       "Default": "Information",
-      "Microsoft":  "Warning"
+      "Microsoft": "Warning"
     }
+  },
+  "Tokens": {
+    "Key": "5835k3lj55gsgsgJJKJFGDDFj5j5j#@#+__)"
   }
 }

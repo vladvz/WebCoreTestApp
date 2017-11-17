@@ -12,11 +12,19 @@ namespace WebCoreTestApp.Controllers
     {
         private readonly ILogger<AccountController> _logger;
         private readonly SignInManager<StoreUser> _signInManager;
+        private readonly UserManager<StoreUser> _userManager;
+        private readonly IDesignTimeMvcBuilderConfiguration _config;
 
-        public AccountController(ILogger<AccountController> logger, SignInManager<StoreUser> signInManager)
+        public AccountController(
+            ILogger<AccountController> logger, 
+            SignInManager<StoreUser> signInManager,
+            UserManager<StoreUser> userManager,
+            IDesignTimeMvcBuilderConfiguration config)
         {
             _logger = logger;
             _signInManager = signInManager;
+            _userManager = userManager;
+            _config = config;
         }
 
         public IActionResult Login()
