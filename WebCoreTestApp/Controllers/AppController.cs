@@ -51,9 +51,7 @@ namespace WebCoreTestApp.Controllers
         [HttpGet]
         public IActionResult Shop()
         {
-            var results = _repository.GetAllProducts();
-
-            return View(results);
+            return View();
         }
     }
 }

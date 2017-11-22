@@ -6,27 +6,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var platform_browser_1 = require("@angular/platform-browser");
 var core_1 = require("@angular/core");
-var app_component_1 = require("./app.component");
-var productList_component_1 = require("./shop/productList.component");
-var AppModule = (function () {
-    function AppModule() {
+var ProductList = (function () {
+    function ProductList() {
+        this.products = [
+            { title: "First product", price: 19.20 },
+            { title: "Second product", price: 15.44 },
+            { title: "Third product", price: 9.20 }
+        ];
     }
-    return AppModule;
+    return ProductList;
 }());
-AppModule = __decorate([
-    core_1.NgModule({
-        declarations: [
-            app_component_1.AppComponent,
-            productList_component_1.ProductList
-        ],
-        imports: [
-            platform_browser_1.BrowserModule
-        ],
-        providers: [],
-        bootstrap: [app_component_1.AppComponent]
+ProductList = __decorate([
+    core_1.Component({
+        selector: "product-list",
+        templateUrl: "productList.component.html",
+        styles: []
     })
-], AppModule);
-exports.AppModule = AppModule;
-//# sourceMappingURL=app.module.js.map
+], ProductList);
+exports.ProductList = ProductList;
+//# sourceMappingURL=productList.component.js.map
