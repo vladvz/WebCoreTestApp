@@ -9,26 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+var http_1 = require("@angular/common/http");
 var core_1 = require("@angular/core");
-var dataService_1 = require("../shared/dataService");
-var ProductList = (function () {
-    function ProductList(data) {
-        this.data = data;
+require("rxjs/add/operator/map");
+var DataService = (function () {
+    function DataService(http) {
+        this.http = http;
+        this.products = [];
     }
-    ProductList.prototype.ngOnInit = function () {
+    ;
+    DataService.prototype.loadProducts = function () {
         var _this = this;
-        this.data.loadProducts()
-            .subscribe(function () { _this.products = _this.data.products; });
+        return this.http.get("/api/products")
+            .map(function (data) {
+            _this.products = data;
+            return _this.products;
+        });
     };
-    return ProductList;
+    ;
+    return DataService;
 }());
-ProductList = __decorate([
-    core_1.Component({
-        selector: "product-list",
-        templateUrl: "productList.component.html",
-        styles: []
-    }),
-    __metadata("design:paramtypes", [dataService_1.DataService])
-], ProductList);
-exports.ProductList = ProductList;
-//# sourceMappingURL=productList.component.js.map
+DataService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.HttpClient])
+], DataService);
+exports.DataService = DataService;
+//# sourceMappingURL=dataService.js.map
