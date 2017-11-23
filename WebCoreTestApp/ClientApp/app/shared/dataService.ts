@@ -12,11 +12,11 @@ export class DataService {
 
     public products : Product[] = [];
 
-    loadProducts(): Observable<Product[]> {
+    loadProducts(): Observable<boolean> {
         return this.http.get("/api/products")
             .map((data: any[]) => {
                 this.products = data;
-                return this.products;
+                return true;
             });
     };
 }
