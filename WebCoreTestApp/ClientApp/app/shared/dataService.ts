@@ -2,6 +2,7 @@
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { Product } from "./product";
+import { Order, OrderItem } from "./order";
 import "rxjs/add/operator/map";
 
 @Injectable()
@@ -10,7 +11,8 @@ export class DataService {
 
     };
 
-    public products : Product[] = [];
+    public products: Product[] = [];
+    public order: Order = new Order();
 
     loadProducts(): Observable<boolean> {
         return this.http.get("/api/products")
@@ -19,4 +21,18 @@ export class DataService {
                 return true;
             });
     };
+
+    public AddToOrder(product: Product){
+        let item: OrderItem;
+
+        item = new OrderItem();
+        item.productId = product.id;
+        item.productArtist = product.artist;
+        item.productCategory = product.category;
+        item.productArtId = product.artId;
+        item.unitPrice = product.price;
+        item.quantity = 1;
+
+        this.order.items.push(item);
+    }
 }
