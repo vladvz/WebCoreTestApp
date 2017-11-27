@@ -30,15 +30,21 @@ var DataService = (function () {
     };
     ;
     DataService.prototype.AddToOrder = function (product) {
-        var item;
-        item = new order_1.OrderItem();
-        item.productId = product.id;
-        item.productArtist = product.artist;
-        item.productCategory = product.category;
-        item.productArtId = product.artId;
-        item.unitPrice = product.price;
-        item.quantity = 1;
-        this.order.items.push(item);
+        var item = this.order.items.find(function (i) { return i.productId == product.id; });
+        if (item) {
+            item.quantity++;
+        }
+        else {
+            item = new order_1.OrderItem();
+            item.productId = product.id;
+            item.productArtist = product.artist;
+            item.productCategory = product.category;
+            item.productArtId = product.artId;
+            item.productTitle = product.title;
+            item.unitPrice = product.price;
+            item.quantity = 1;
+            this.order.items.push(item);
+        }
     };
     return DataService;
 }());
