@@ -45,7 +45,7 @@ namespace WebCoreTestApp
             services.AddScoped<IWebCoreRepository, WebCoreRepository>();
             services.AddMvc(opt => 
             {
-                if (_env.IsProduction())
+                if (_env.IsProduction() && _config["DisableSSL"] != "true")
                 {
                     opt.Filters.Add(new RequireHttpsAttribute());
                 }
